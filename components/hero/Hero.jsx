@@ -154,4 +154,4 @@ const About = () => {
     );
 };
 
-export default Features;
+export { About };
