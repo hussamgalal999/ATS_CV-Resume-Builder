@@ -33,20 +33,22 @@ export default function Builder(props) {
   const handleProfilePicture = (e) => {
     const file = e.target.files[0];
 
-    if (file instanceof Blob) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setResumeData({ ...resumeData, profilePicture: event.target.result });
-      };
-      reader.readAsDataURL(file);
-    } else {
-      console.error("Invalid file type");
+    if (!file) return;
+    if (!file.type.startsWith("image/") || file.size > 2 * 1024 * 1024) {
+      window.alert("Choose a valid image no larger than 2MB.");
+      e.target.value = "";
+      return;
     }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setResumeData((previous) => ({ ...previous, profilePicture: String(event.target?.result || "") }));
+    };
+    reader.onerror = () => window.alert("The selected image could not be read.");
+    reader.readAsDataURL(file);
   };
 
   const handleChange = (e) => {
-    setResumeData({ ...resumeData, [e.target.name]: e.target.value });
-    console.log(resumeData);
+    setResumeData((previous) => ({ ...previous, [e.target.name]: e.target.value }));
   };
 
   return (
