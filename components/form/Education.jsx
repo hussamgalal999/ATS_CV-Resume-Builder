@@ -21,11 +21,8 @@ const Education = () => {
       });
     };
   
-    const removeEducation = (index) => {
-      const newEducation = [...resumeData.education];
-      newEducation[index] = newEducation[newEducation.length - 1];
-      newEducation.pop();
-      setResumeData({ ...resumeData, education: newEducation });
+    const removeEducation = () => {
+      setResumeData((prev) => ({ ...prev, education: prev.education.slice(0, -1) }));
     };
     
     return (

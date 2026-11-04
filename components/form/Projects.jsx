@@ -17,7 +17,7 @@ const Projects = () => {
       projects: [
         ...resumeData.projects,
         {
-          title: "",
+          name: "",
           link: "",
           description: "",
           keyAchievements: "",
@@ -28,11 +28,8 @@ const Projects = () => {
     });
   };
 
-  const removeProjects = (index) => {
-    const newProjects = [...resumeData.projects];
-    newProjects[index] = newProjects[newProjects.length - 1];
-    newProjects.pop();
-    setResumeData({ ...resumeData, projects: newProjects });
+  const removeProjects = () => {
+    setResumeData((prev) => ({ ...prev, projects: prev.projects.slice(0, -1) }));
   };
 
   return (

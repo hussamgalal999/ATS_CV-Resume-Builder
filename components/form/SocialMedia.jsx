@@ -22,11 +22,8 @@ const SocialMedia = () => {
     });
   };
 
-  const removeSocialMedia = (index) => {
-    const newSocialMedia = [...resumeData.socialMedia];
-    newSocialMedia[index] = newSocialMedia[newSocialMedia.length - 1];
-    newSocialMedia.pop();
-    setResumeData({ ...resumeData, socialMedia: newSocialMedia });
+  const removeSocialMedia = () => {
+    setResumeData((prev) => ({ ...prev, socialMedia: prev.socialMedia.slice(0, -1) }));
   };
 
   return (

@@ -36,21 +36,13 @@ const Skill = ({ title }) => {
     });
   };
 
-  const removeSkill = (title, index) => {
-    setResumeData((prevData) => {
-      const skillType = prevData.skills.find(
-        (skillType) => skillType.title === title
-      );
-      const newSkills = [...skillType.skills];
-      newSkills.pop();
-      const updatedSkills = prevData.skills.map((skill) =>
-        skill.title === title ? { ...skill, skills: newSkills } : skill
-      );
-      return {
-        ...prevData,
-        skills: updatedSkills,
-      };
-    });
+  const removeSkill = (title) => {
+    setResumeData((prevData) => ({
+      ...prevData,
+      skills: prevData.skills.map((skill) =>
+        skill.title === title ? { ...skill, skills: skill.skills.slice(0, -1) } : skill
+      ),
+    }));
   };
 
   const skillType = resumeData.skills.find(
