@@ -35,7 +35,8 @@ export const validateResumeData = (input) => {
     result[field] = input[field] === undefined ? "" : safeText(input[field], field);
   }
 
-  const picture = input.profilePicture === undefined ? "" : safeText(input.profilePicture, "profilePicture");
+  const picture = input.profilePicture === undefined ? "" : input.profilePicture;
+  if (typeof picture !== "string") throw new Error("Invalid field: profilePicture");
   if (picture && (!/^data:image\/(png|jpeg|jpg|webp);base64,/i.test(picture) || picture.length > 3_000_000)) {
     throw new Error("Profile picture must be a small PNG, JPEG, or WebP data image.");
   }
