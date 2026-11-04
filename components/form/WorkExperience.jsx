@@ -31,11 +31,8 @@ const WorkExperience = () => {
     });
   };
 
-  const removeWorkExperience = (index) => {
-    const newworkExperience = [...resumeData.workExperience];
-    newworkExperience[index] = newworkExperience[newworkExperience.length - 1];
-    newworkExperience.pop();
-    setResumeData({ ...resumeData, workExperience: newworkExperience });
+  const removeWorkExperience = () => {
+    setResumeData((prev) => ({ ...prev, workExperience: prev.workExperience.slice(0, -1) }));
   };
 
   return (
