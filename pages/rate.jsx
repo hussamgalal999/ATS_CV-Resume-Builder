@@ -20,7 +20,7 @@ const Rate = () => {
       return;
     }
     const extension = file.name.toLowerCase().split(".").pop();
-    if (extension !== "txt" || file.type !== "text/plain") {
+    if (extension !== "txt" || (file.type && file.type !== "text/plain")) {
       setError("Only .txt files can be assessed accurately by this version. PDF/DOCX parsing is not available yet.");
       return;
     }
