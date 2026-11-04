@@ -21,24 +21,20 @@ export const analyzeResume = (content) => {
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, " ")
     .trim();
 
-  if (!normalized) {
-    throw new Error("The uploaded text file is empty.");
-  }
-  if (normalized.length > 50000) {
-    throw new Error("The resume text is too large to analyze.");
-  }
+  if (!normalized) throw new Error("The uploaded text file is empty.");
+  if (normalized.length > 50000) throw new Error("The resume text is too large to analyze.");
 
   const wordCount = countWords(normalized);
   const findings = [];
   const suggestions = [];
   let score = 0;
-  const detectedSections = [];
+  let detectedSectionCount = 0;
 
   for (const section of SECTION_RULES) {
     const found = section.patterns.some((pattern) => pattern.test(normalized));
     if (found) {
       score += section.weight;
-      detectedSections.push(section.key);
+      detectedSectionCount += 1;
       findings.push({ key: section.key, label: section.label, status: "found" });
     } else {
       findings.push({ key: section.key, label: section.label, status: "missing" });
@@ -63,21 +59,12 @@ export const analyzeResume = (content) => {
     suggestions.push("The extracted text is lengthy. Consider removing repetition while preserving relevant evidence.");
   }
 
-  if (detectedSections.includes("experience") && detectedSections.includes("skills")) {
-    findings.push({ key: "role_content", label: "Experience and skills sections both detected", status: "found" });
-  }
-
   return {
     score: Math.min(100, score),
     scoreType: "heuristic_structure_check",
     disclaimer: "This is a basic text-structure checklist, not an ATS pass probability, employer assessment, or guarantee of interview selection.",
     findings,
     suggestions,
-    metrics: {
-      wordCount,
-      detectedSectionCount: detectedSections.length,
-      totalSectionsChecked: SECTION_RULES.length,
-      hasQuantifiedEvidence,
-    },
+    metrics: { wordCount, detectedSectionCount, totalSectionsChecked: SECTION_RULES.length, hasQuantifiedEvidence },
   };
 };
